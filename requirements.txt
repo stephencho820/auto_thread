@@ -1,1 +1,4 @@
-
+openai
+playwright
+requests
+beautifulsoup4

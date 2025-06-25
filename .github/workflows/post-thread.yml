@@ -1,0 +1,33 @@
+name: Post AI Thread
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # 매 정각
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install --with-deps
+
+      - name: Fetch AI news
+        run: python scripts/fetch_ai_news.py > data/latest_ai_news.json
+
+      - name: Generate post with GPT
+        run: python scripts/generate_post.py > data/generated_post.txt
+
+      - name: Upload to Threads
+        run: python scripts/upload_to_threads.py
