@@ -1,3 +1,4 @@
+import os
 import openai
 import json
 
@@ -16,7 +17,13 @@ def make_post(news_list):
     뉴스 목록:
     {headlines}
     """
-    openai.api_key = "YOUR_API_KEY"
+
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if api_key is None:
+        raise ValueError("OPENAI_API_KEY 환경변수가 설정되어 있지 않습니다.")
+    
+    openai.api_key = api_key
+
     res = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[{"role": "user", "content": prompt}]

@@ -1,14 +1,8 @@
-name: Post AI Thread
-
-on:
-  schedule:
-    - cron: '0 * * * *'  # 매 정각
-  workflow_dispatch:
-
 jobs:
   post:
     runs-on: ubuntu-latest
-
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
